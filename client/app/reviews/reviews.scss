@@ -7,6 +7,13 @@
 		border-radius: 40px;
 	}
 
+	@media (max-width: 768px) {
+	    text-align: center;
+	    .single {
+	    	margin-bottom: 30px;
+	    }
+	}
+
 	.text {
 		font-style: italic;
 		font-size: 20px;

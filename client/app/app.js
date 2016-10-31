@@ -1,7 +1,7 @@
 'use strict';
 
 import angular from 'angular';
-// import ngAnimate from 'angular-animate';
+import ngAnimate from 'angular-animate';
 import ngCookies from 'angular-cookies';
 import ngResource from 'angular-resource';
 import ngSanitize from 'angular-sanitize';
@@ -27,15 +27,16 @@ import constants from './app.constants';
 import util from '../components/util/util.module';
 import socket from '../components/socket/socket.service';
 import s3 from './s3/s3.service';
-import reviews from './components/reviews/reviews.component';
-import whyUs from './components/why-us/why-us.component';
+import reviews from './reviews/reviews.component';
+import whyUs from './why-us/why-us.component';
+import time from './time/time.component';
 import ngFileUpload from 'ng-file-upload';
 
 import './app.scss';
 
-angular.module('transcribeApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
+angular.module('transcribeApp', [ngCookies, ngAnimate, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
   uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util , ngFileUpload, 
-  s3, reviews, whyUs
+  s3, reviews, whyUs, time
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

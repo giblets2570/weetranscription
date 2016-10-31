@@ -1,17 +1,17 @@
 <header class="hero-unit" id="banner">
   <div class="container">
-    <h1>Transcriptions made easy</h1>
-    <p class="lead">We save your time for</p>
-    <p class="price-tag"> 70p per minute</p>
+    <h1>Transcriptions, made really easy</h1>
+    <p class="lead">24hr turnaround. We save your time for 70p a minute</p>
     <div class="row">
       <div class="col-md-offset-4 col-md-4">
         <button 
-          class='btn btn-primary cta' 
+          class='cta' 
           ngf-select="$ctrl.chooseFile($file)">
-          Upload
+          UPLOAD
         </button>
       </div>
     </div>
+    <p class="tna">English speakers only. Max uploads are 750MB per file. No minimum charge. Your files are treated as confidential. </p>
   </div>
 </header>
 
@@ -37,7 +37,7 @@
         </div>
         <div class="card-content">
           <p>
-            {{$ctrl.price | number : 2}}
+            {{$ctrl.price / 100 | number : 2}}
           </p>
         </div>
       </div>
@@ -64,13 +64,21 @@
             {{$ctrl.$file.name}}
           </td>
           <td>
-            {{$ctrl.seconds / 60 | number : 0}}:{{$ctrl.seconds % 60 | number : 0}}m
+            <time seconds='$ctrl.seconds'></time>
           </td>
           <td uib-tooltip="The price is 0.70p per minute">
-            {{$ctrl.seconds / 60 | number : 0}}:{{$ctrl.seconds % 60 | number : 0}}m x £{{$ctrl.base}} / m = £{{$ctrl.price | number : 2}}
+            <time seconds='$ctrl.seconds'></time> x £{{$ctrl.base / 100 | number : 2}} = £{{$ctrl.price / 100 | number : 2}}
           </td>
         </tr>
       </table>
+    </div>
+    <div class="col-xs-12">
+      <button 
+        class='cta' 
+        ng-click="$ctrl.openHandler()"
+        >
+        CHECKOUT
+      </button>
     </div>
   </div>
 </div>

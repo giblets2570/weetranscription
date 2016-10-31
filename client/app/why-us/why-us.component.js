@@ -22,7 +22,7 @@ export class whyUsComponent {
 
 export default angular.module('transcribeApp.why-us', [])
   .component('whyUs', {
-    templateUrl: 'app/components/why-us/why-us.html',
+    template: require('./why-us.html'),
     bindings: {},
     controller: whyUsComponent
   })

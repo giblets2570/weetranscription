@@ -20,7 +20,7 @@ export class reviewsComponent {
 
 export default angular.module('transcribeApp.reviews', [])
   .component('reviews', {
-    templateUrl: 'app/components/reviews/reviews.html',
+    template: require('./reviews.html'),
     bindings: {},
     controller: reviewsComponent
   })

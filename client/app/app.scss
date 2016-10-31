@@ -11,7 +11,9 @@ $fa-font-path: '/assets/fonts/font-awesome/';
  */
 
 body {
-	font-family: 'Lato', sans-serif;
+	// font-family: 'Lato', sans-serif;
+	// font-family: 'Dosis', sans-serif;
+	font-family: 'Lato', sans-serif !important;
 }
 
 .browserupgrade {
@@ -24,9 +26,9 @@ body {
 // Component styles are injected through gulp
 /* inject:scss */
 @import 'admin/admin';
-@import 'components/reviews/reviews';
-@import 'components/why-us/why-us';
 @import 'main/main';
+@import 'reviews/reviews';
+@import 'why-us/why-us';
 @import '../components/footer/footer';
 @import '../components/modal/modal';
 @import '../components/navbar/navbar';

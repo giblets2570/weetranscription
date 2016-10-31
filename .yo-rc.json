@@ -38,7 +38,7 @@
   "generator-ng-component": {
     "routeDirectory": "client/app/",
     "directiveDirectory": "client/app/",
-    "componentDirectory": "client/app/components/",
+    "componentDirectory": "client/app/",
     "filterDirectory": "client/app/",
     "serviceDirectory": "client/app/",
     "basePath": "client",

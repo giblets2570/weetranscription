@@ -14,11 +14,30 @@ export class MainController {
     this.socket = socket;
     this.s3 = s3;
     this.$file = null;
-    this.base = 0.7;
+    this.base = 70;
     this.times = [{text: '1 day', date: Date.now()},{text: '3 days', date: Date.now()},{text: '5 days', date: Date.now()}];
     this.selected_time = '1 day';
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
+    });
+
+    this.handler = StripeCheckout.configure({
+      key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+      image: '/assets/images/logo.png',
+      locale: 'auto',
+      currency: 'gbp',
+      token: function(token) {
+        // Use the token to create the charge with a server-side script.
+        // You can access the token ID with `token.id`
+      }
+    });
+  }
+
+  openCheckout(){
+    this.handler.open({
+      name: 'transcribe4me',
+      description: `${this.seconds} audio transcription`,
+      amount: this.price
     });
   }
 
@@ -47,7 +66,7 @@ export class MainController {
     this.$file = $file;
     this.s3.getDuration(this.$file).then(seconds => {
       this.seconds = seconds;
-      this.price = this.seconds * this.base / 60.0;
+      this.price = Math.floor(this.seconds * this.base / 60.0);
     })
   }
 
