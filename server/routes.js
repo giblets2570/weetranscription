@@ -25,6 +25,10 @@ export default function(app) {
     }
   });
 
+  app.post('/api/pay', (req,res) => {
+    
+  });
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);

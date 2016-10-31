@@ -17,26 +17,44 @@ export class MainController {
     this.base = 70;
     this.times = [{text: '1 day', date: Date.now()},{text: '3 days', date: Date.now()},{text: '5 days', date: Date.now()}];
     this.selected_time = '1 day';
+    this.checkout = "CHECKOUT";
+    
+
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
     });
+
+    let $this = this;
+
+    this.progress = 0;
 
     this.handler = StripeCheckout.configure({
       key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
       image: '/assets/images/logo.png',
       locale: 'auto',
       currency: 'gbp',
-      token: function(token) {
-        // Use the token to create the charge with a server-side script.
-        // You can access the token ID with `token.id`
-      }
+      token: this.processToken.bind($this)
+    });
+  }
+
+  processToken(token){
+    this.charging = true;
+    this.checkout = "PROCESSING...";
+    this.progress = 0;
+    this.s3.sendFile(this.$file).then((resp) => {
+      console.log(resp);
+    },  (error) => {
+      console.log(error);
+    },  (evt) => {
+      this.progress =  parseInt(100.0 * evt.loaded / evt.total);
+      console.log(this.progress);
     });
   }
 
   openCheckout(){
     this.handler.open({
       name: 'transcribe4me',
-      description: `${this.seconds} audio transcription`,
+      description: `${Math.floor(this.seconds)} seconds of audio transcription`,
       amount: this.price
     });
   }
@@ -50,7 +68,11 @@ export class MainController {
   }
 
   getDate(){
-    let date = Date.now().valueOf();
+    let now = new Date(Date.now());
+    let date = now.valueOf();
+    if(now.getHours() > 16){
+      date += day;
+    }
     switch(this.selected_time){
       case '1 day':
         date = new Date(date + day);
@@ -63,8 +85,10 @@ export class MainController {
   }
 
   chooseFile($file){
+    if(!$file) return;
     this.$file = $file;
-    this.s3.getDuration(this.$file).then(seconds => {
+    this.filename = $file.name;
+    this.s3.getDuration($file).then(seconds => {
       this.seconds = seconds;
       this.price = Math.floor(this.seconds * this.base / 60.0);
     })

@@ -61,7 +61,7 @@
             </a>
           </td>
           <td class="hidden-sm hidden-xs">
-            {{$ctrl.$file.name}}
+            {{$ctrl.filename}}
           </td>
           <td>
             <time seconds='$ctrl.seconds'></time>
@@ -75,10 +75,12 @@
     <div class="col-xs-12">
       <button 
         class='cta' 
-        ng-click="$ctrl.openHandler()"
+        ng-click="$ctrl.openCheckout()"
+        ng-disabled="$ctrl.charging"
         >
-        CHECKOUT
+        {{$ctrl.checkout}}
       </button>
+      <uib-progressbar ng-show='$ctrl.charging' type="info" value="$ctrl.progress"></uib-progressbar>
     </div>
   </div>
 </div>
