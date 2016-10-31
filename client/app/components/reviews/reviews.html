@@ -1,0 +1,20 @@
+<div class="row review-card">
+	<div class="col-md-6" ng-repeat="review in $ctrl.reviews">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-2">
+				<img 
+					ng-src='{{review.image}}'
+					class="image">	
+			</div>
+			<div class=" col-md-8">
+				<p class="text" ng-bind='review.text'></p>	
+			</div>
+			<div class="col-md-offset-6 col-md-6">
+				<p>
+					<span class="name" ng-bind='review.name'></span> - 
+					<span class="occupation" ng-bind='review.occupation'></span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
