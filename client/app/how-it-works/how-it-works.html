@@ -1,0 +1,17 @@
+<div class="container" id="how-it-works">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 class="head">How it works</h2>
+		</div>
+	</div>
+	<div class="row pictures">
+		<div class="col-md-3" ng-repeat="how in $ctrl.hows">
+			<img 
+				ng-src="{{how.image}}"
+				class="image">
+			<h3 class="title">
+				{{how.title}}
+			</h3>
+		</div>
+	</div>
+</div>

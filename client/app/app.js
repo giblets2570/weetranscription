@@ -24,12 +24,15 @@ import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
+import terms from './terms/terms.component';
+import contact from './contact/contact.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
 import socket from '../components/socket/socket.service';
 import s3 from './s3/s3.service';
 import reviews from './reviews/reviews.component';
 import whyUs from './why-us/why-us.component';
+import howItWorks from './how-it-works/how-it-works.component';
 import time from './time/time.component';
 import keen from './keen/keen.service';
 import ngFileUpload from 'ng-file-upload';
@@ -39,7 +42,7 @@ import './app.scss';
 
 angular.module('transcribeApp', [ngCookies, Modal, ngAnimate, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
   uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util , ngFileUpload, 
-  s3, reviews, whyUs, time, keen
+  s3, reviews, whyUs, time, keen, terms, contact, howItWorks
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
