@@ -30,6 +30,7 @@ var socketio = require('socket.io')(server, {
   path: '/socket.io-client'
 });
 require('./config/socketio').default(socketio);
+require('./config/hooks').default();
 require('./config/express').default(app);
 require('./routes').default(app);
 

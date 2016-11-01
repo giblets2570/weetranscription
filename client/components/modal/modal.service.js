@@ -73,6 +73,8 @@ export function Modal($rootScope, $uibModal) {
   };
 }
 
+Modal.$inject = ["$rootScope", "$uibModal"];
+
 export default angular.module('transcribeApp.Modal', [])
   .factory('Modal', Modal)
   .name;

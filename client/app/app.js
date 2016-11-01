@@ -18,6 +18,7 @@ import {
 } from './app.config';
 
 import _Auth from '../components/auth/auth.module';
+import Modal from '../components/modal/modal.service';
 import account from './account';
 import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
@@ -30,13 +31,15 @@ import s3 from './s3/s3.service';
 import reviews from './reviews/reviews.component';
 import whyUs from './why-us/why-us.component';
 import time from './time/time.component';
+import keen from './keen/keen.service';
 import ngFileUpload from 'ng-file-upload';
+
 
 import './app.scss';
 
-angular.module('transcribeApp', [ngCookies, ngAnimate, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
+angular.module('transcribeApp', [ngCookies, Modal, ngAnimate, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
   uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util , ngFileUpload, 
-  s3, reviews, whyUs, time
+  s3, reviews, whyUs, time, keen
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

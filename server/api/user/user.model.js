@@ -4,6 +4,8 @@ import crypto from 'crypto';
 mongoose.Promise = require('bluebird');
 import mongoose, {Schema} from 'mongoose';
 
+import generatePassword from 'password-generator';
+
 const authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
@@ -87,28 +89,28 @@ UserSchema
     return password.length;
   }, 'Password cannot be blank');
 
-// Validate email is not taken
-UserSchema
-  .path('email')
-  .validate(function(value, respond) {
-    if(authTypes.indexOf(this.provider) !== -1) {
-      return respond(true);
-    }
+// // Validate email is not taken
+// UserSchema
+//   .path('email')
+//   .validate(function(value, respond) {
+//     if(authTypes.indexOf(this.provider) !== -1) {
+//       return respond(true);
+//     }
 
-    return this.constructor.findOne({ email: value }).exec()
-      .then(user => {
-        if(user) {
-          if(this.id === user.id) {
-            return respond(true);
-          }
-          return respond(false);
-        }
-        return respond(true);
-      })
-      .catch(function(err) {
-        throw err;
-      });
-  }, 'The specified email address is already in use.');
+//     return this.constructor.findOne({ email: value }).exec()
+//       .then(user => {
+//         if(user) {
+//           if(this.id === user.id) {
+//             return respond(true);
+//           }
+//           return respond(false);
+//         }
+//         return respond(true);
+//       })
+//       .catch(function(err) {
+//         throw err;
+//       });
+//   }, 'The specified email address is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
@@ -152,6 +154,23 @@ UserSchema
  * Methods
  */
 UserSchema.methods = {
+  /**
+   * Generate - create a password
+   *
+   * @param {String} password
+   * @param {Function} callback
+   * @return {Boolean}
+   * @api public
+   */
+  generatePassword(callback) {
+    let password = generatePassword(12, false);
+    if(callback) {
+      return callback(null, password);
+    }else{
+      return password;
+    }
+  },
+
   /**
    * Authenticate - check if the passwords are the same
    *

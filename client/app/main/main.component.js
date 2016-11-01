@@ -9,49 +9,50 @@ export class MainController {
   newThing = '';
 
   /*@ngInject*/
-  constructor($http, $scope, socket, s3) {
+  constructor($http, $scope, socket, s3, keen, Auth, appConfig) {
     this.$http = $http;
     this.socket = socket;
     this.s3 = s3;
+    this.Auth = Auth;
+    this.keen = keen;
     this.$file = null;
     this.base = 70;
     this.times = [{text: '1 day', date: Date.now()},{text: '3 days', date: Date.now()},{text: '5 days', date: Date.now()}];
     this.selected_time = '1 day';
     this.checkout = "CHECKOUT";
-    
-
-    $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('thing');
-    });
-
-    let $this = this;
-
     this.progress = 0;
-
-    this.handler = StripeCheckout.configure({
-      key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
-      image: '/assets/images/logo.png',
-      locale: 'auto',
-      currency: 'gbp',
-      token: this.processToken.bind($this)
-    });
+    this.quote_text = "Our instant quote";
+    this.keen.log('landed',{date: Date.now()});
   }
 
   processToken(token){
     this.charging = true;
     this.checkout = "PROCESSING...";
     this.progress = 0;
+    this.keen.log('pressedOrder',{date: Date.now(), email: token.email});
     this.s3.sendFile(this.$file).then((resp) => {
-      console.log(resp);
+      let audio = `${resp.config.url}${resp.config.data.key}`;
+      this.keen.log('audioUploaded',{date: Date.now(), email: token.email});
+      this.Auth.createUser({
+        token: token,
+        audio: audio,
+        amount: this.price
+      }).then(_=>{
+        this.order_confirmed = true;
+        this.charging = false;
+        this.quote_text = "Your order summary";
+        this.keen.log('orderConfirmed',{date: Date.now(), email: token.email});
+      });
     },  (error) => {
       console.log(error);
     },  (evt) => {
-      this.progress =  parseInt(100.0 * evt.loaded / evt.total);
+      this.progress = Math.min(parseInt(100.0 * evt.loaded / evt.total),95);
       console.log(this.progress);
     });
   }
 
   openCheckout(){
+    this.keen.log('openedCheckout',{date: Date.now()});
     this.handler.open({
       name: 'transcribe4me',
       description: `${Math.floor(this.seconds)} seconds of audio transcription`,
@@ -60,11 +61,17 @@ export class MainController {
   }
 
   $onInit() {
-    this.$http.get('/api/things')
+    this.$http.get('/api/stripe')
       .then(response => {
-        this.awesomeThings = response.data;
-        this.socket.syncUpdates('thing', this.awesomeThings);
-      });
+        let $this = this;
+        this.handler = StripeCheckout.configure({
+          key: response.data,
+          image: '/assets/images/four.png',
+          locale: 'auto',
+          currency: 'gbp',
+          token: this.processToken.bind($this)
+        });
+      })
   }
 
   getDate(){
@@ -86,12 +93,18 @@ export class MainController {
 
   chooseFile($file){
     if(!$file) return;
-    this.$file = $file;
-    this.filename = $file.name;
-    this.s3.getDuration($file).then(seconds => {
-      this.seconds = seconds;
-      this.price = Math.floor(this.seconds * this.base / 60.0);
-    })
+    if($file.type.substring(0,5) !== 'audio'){
+      alert("Please upload audio files for transcription :)");
+      return;
+    }else{
+      this.$file = $file;
+      this.filename = $file.name;
+      this.s3.getDuration($file).then(seconds => {
+        this.seconds = seconds;
+        this.price = Math.floor(this.seconds * this.base / 60.0);
+        this.keen.log('choseFile',{date: Date.now(), filename: this.filename, seconds: this.seconds, price: this.price});
+      })
+    }
   }
 
   deleteFile(){
@@ -99,22 +112,6 @@ export class MainController {
     this.seconds  = null;
   }
 
-  sendFile(){
-    // this.s3.
-  }
-
-  addThing() {
-    if(this.newThing) {
-      this.$http.post('/api/things', {
-        name: this.newThing
-      });
-      this.newThing = '';
-    }
-  }
-
-  deleteThing(thing) {
-    this.$http.delete(`/api/things/${thing._id}`);
-  }
 }
 
 export default angular.module('transcribeApp.main', [uiRouter])

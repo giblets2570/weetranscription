@@ -17,7 +17,7 @@
 
 <div class="container" id="quote" ng-show='$ctrl.seconds'>
   <div class="row">
-    <h3>Our instant quote</h3>
+    <h3>{{$ctrl.quote_text}}</h3>
     <div class="col-md-offset-2 col-md-4">
       <div class="row card" uib-tooltip="Expected delivery date of your transcription">
         <div class="card-label">
@@ -63,7 +63,7 @@
           <td class="hidden-sm hidden-xs">
             {{$ctrl.filename}}
           </td>
-          <td>
+          <td uib-tooltip="The total length of your audio file">
             <time seconds='$ctrl.seconds'></time>
           </td>
           <td uib-tooltip="The price is 0.70p per minute">
@@ -72,7 +72,7 @@
         </tr>
       </table>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12" ng-hide='$ctrl.order_confirmed'>
       <button 
         class='cta' 
         ng-click="$ctrl.openCheckout()"
@@ -80,7 +80,17 @@
         >
         {{$ctrl.checkout}}
       </button>
-      <uib-progressbar ng-show='$ctrl.charging' type="info" value="$ctrl.progress"></uib-progressbar>
+      <div ng-show='$ctrl.charging'>
+        <uib-progressbar type="info" value="$ctrl.progress"></uib-progressbar>
+        <p>Please don't leave this page until we've fully processed your order. {{$ctrl.progress}}% complete.</p>
+      </div>
+    </div>
+    <div class="col-xs-12" ng-show='$ctrl.order_confirmed'>
+      <div>
+        <p class="confirmed">
+          Thanks for your order! You'll recieve an email from us shortly.
+        </p>
+      </div>
     </div>
   </div>
 </div>

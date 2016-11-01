@@ -4,9 +4,16 @@ import User from './user.model';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 
+import co from 'co';
+
+var stripe = require("stripe")(
+  process.env.STRIPE_SECRET_KEY
+);
+
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
+    console.error(err);
     return res.status(statusCode).json(err);
   };
 }
@@ -34,17 +41,38 @@ export function index(req, res) {
  * Creates a new user
  */
 export function create(req, res) {
-  var newUser = new User(req.body);
-  newUser.provider = 'local';
-  newUser.role = 'user';
-  newUser.save()
-    .then(function(user) {
-      var token = jwt.sign({ _id: user._id }, config.secrets.session, {
-        expiresIn: 60 * 60 * 5
+  return co(function*(){
+    if(req.body.token && req.body.token.id){
+      let stripe_charge = yield stripe.charges.create({
+        amount: req.body.amount,
+        currency: "gbp",
+        source: req.body.token.id, // obtained with Stripe.js
+        description: `Charge for ${req.body.token.email}`
       });
-      res.json({ token });
-    })
-    .catch(validationError(res));
+      let newUser = new User();
+      newUser.email = req.body.token.email;
+      newUser.audio = req.body.audio;
+      newUser.stripe_charge_id = stripe_charge.id;
+      newUser.provider = 'local';
+      newUser.role = 'customer';
+      newUser.password = newUser.email;
+      yield newUser.save()
+      return newUser
+    }else{
+      var newUser = new User(req.body);
+      newUser.provider = 'local';
+      newUser.role = 'user';
+      yield newUser.save()
+      return newUser;
+    }
+  })
+  .then(function(user) {
+    var token = jwt.sign({ _id: user._id }, config.secrets.session, {
+      expiresIn: 60 * 60 * 5
+    });
+    res.json({ token });
+  })
+  .catch(validationError(res));
 }
 
 /**
