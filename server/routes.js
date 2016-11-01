@@ -16,6 +16,23 @@ let keen = require('keen.io').configure({
 });
 
 export default function(app) {
+
+  // Redirect all HTTP traffic to HTTPS
+  var ensureSecure = function(req, res, next) {
+    // req.connection._peername.address is for testing distrbution on localhost
+    if(req.headers["x-forwarded-proto"] === "https" || req.connection._peername.address === '127.0.0.1'){
+      // OK, continue
+      return next();
+    }else{
+      return res.redirect(301,'https://'+req.hostname+req.url);
+    }
+  };
+
+  // Handle environments
+  if (process.env.NODE_ENV === 'production') {
+    app.all('*', ensureSecure);
+  }
+  
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
