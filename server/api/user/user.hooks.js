@@ -7,7 +7,7 @@
 import UserEvents from './user.events';
 
 import sendgridApi from 'sendgrid';
-var sendgrid = sendgridApi("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");
+var sendgrid = sendgridApi(process.env.SENDGRID_API_KEY);
 
 // Model events to emit
 var event = 'save';
