@@ -44,6 +44,10 @@ export default function(app) {
     });
   });
 
+  app.get('/api/keen/keys', (req,res) => {
+    return res.json({keenProjectId: process.env.KEEN_PROJECT_ID, keenReadKey: process.env.KEEN_READ_KEY})
+  })
+
   app.get('/api/stripe', (req,res) => {
     return res.json(process.env.STRIPE_PUBLISHABLE_KEY);
   });

@@ -13,6 +13,13 @@ export function keenService($http) {
 			}
         });
     };
+
+    this.keys = () => {
+        return $http({
+			method:'GET',
+			url:'/api/keen/keys',
+        })
+    };
 };
 
 export default angular.module('transcribeApp.keen', [])
