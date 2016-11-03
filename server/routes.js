@@ -33,9 +33,9 @@ export default function(app) {
   };
 
   // Handle environments
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.all('*', ensureSecure);
-  // }
+  if (process.env.NODE_ENV === 'production') {
+    app.all('*', ensureSecure);
+  }
 
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
