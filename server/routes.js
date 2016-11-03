@@ -17,6 +17,10 @@ let keen = require('keen.io').configure({
 
 export default function(app) {
 
+  app.get('/63D80D0112A3B08836018D1946C3BA0B.txt', (req, res) => {
+    res.sendFile(path.resolve(`${app.get('appPath')}/63D80D0112A3B08836018D1946C3BA0B.txt`));
+  });
+
   // Redirect all HTTP traffic to HTTPS
   var ensureSecure = function(req, res, next) {
     // req.connection._peername.address is for testing distrbution on localhost
@@ -29,9 +33,9 @@ export default function(app) {
   };
 
   // Handle environments
-  if (process.env.NODE_ENV === 'production') {
-    app.all('*', ensureSecure);
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   app.all('*', ensureSecure);
+  // }
 
   // Insert routes below
   app.use('/api/things', require('./api/thing'));

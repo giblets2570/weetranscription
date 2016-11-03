@@ -9,10 +9,12 @@ export class MainController {
   newThing = '';
 
   /*@ngInject*/
-  constructor($http, $scope, socket, s3, keen, Auth, appConfig) {
+  constructor($http, $scope, socket, s3, keen, Auth, User, Modal,appConfig) {
+    console.log(Modal);
     this.$http = $http;
     this.socket = socket;
     this.s3 = s3;
+    this.User = User;
     this.Auth = Auth;
     this.keen = keen;
     this.$file = null;
@@ -30,25 +32,33 @@ export class MainController {
     this.checkout = "PROCESSING...";
     this.progress = 0;
     this.keen.log('pressedOrder',{date: Date.now(), email: token.email});
-    this.s3.sendFile(this.$file).then((resp) => {
-      let audio = `${resp.config.url}${resp.config.data.key}`;
-      this.keen.log('audioUploaded',{date: Date.now(), email: token.email});
-      this.Auth.createUser({
-        token: token,
-        audio: audio,
-        amount: this.price
-      }).then(_=>{
-        this.order_confirmed = true;
-        this.charging = false;
-        this.quote_text = "Your order summary";
-        this.keen.log('orderConfirmed',{date: Date.now(), email: token.email});
-      });
-    },  (error) => {
-      console.log(error);
-    },  (evt) => {
-      this.progress = Math.min(parseInt(100.0 * evt.loaded / evt.total),95);
-      console.log(this.progress);
-    });
+    let old_user = this.User.find({email: token.email})
+    old_user.then(_=>{
+      if(old_user.found){
+        this.discount = 25;
+      }
+      let scop
+      this.Modal.confirm()
+    })
+    // this.s3.sendFile(this.$file).then((resp) => {
+    //   let audio = `${resp.config.url}${resp.config.data.key}`;
+    //   this.keen.log('audioUploaded',{date: Date.now(), email: token.email});
+    //   this.Auth.createUser({
+    //     token: token,
+    //     audio: audio,
+    //     amount: this.price
+    //   }).then(_=>{
+    //     this.order_confirmed = true;
+    //     this.charging = false;
+    //     this.quote_text = "Your order summary";
+    //     this.keen.log('orderConfirmed',{date: Date.now(), email: token.email});
+    //   });
+    // },  (error) => {
+    //   console.log(error);
+    // },  (evt) => {
+    //   this.progress = Math.min(parseInt(100.0 * evt.loaded / evt.total),95);
+    //   console.log(this.progress);
+    // });
   }
 
   openCheckout(){

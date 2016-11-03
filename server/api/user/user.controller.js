@@ -92,6 +92,23 @@ export function show(req, res, next) {
 }
 
 /**
+ * Get a single user
+ */
+export function find(req, res, next) {
+  let query = req.query || {};
+  return User.findOne(query).exec()
+    .then(user => {
+      console.log(user);
+      if(user) {
+        return res.json({found: true});
+      }else{
+        return res.json({found: false});
+      }
+    })
+    .catch(err => next(err));
+}
+
+/**
  * Deletes a user
  * restriction: 'admin'
  */

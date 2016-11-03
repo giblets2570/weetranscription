@@ -17,6 +17,13 @@ export function UserResource($resource) {
       params: {
         id: 'me'
       }
+    },
+    find: {
+      method: 'GET',
+      isArray: false,
+      params: {
+        id: 'find'
+      }
     }
   });
 }
