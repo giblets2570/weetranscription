@@ -28,6 +28,10 @@ export default class AdminController {
 			name: 'choseFile',
 			id: 'chose-file',
 			colour: '#2ecc71'
+		},{
+			name: 'pressedInstant',
+			id: 'pressed-instant',
+			colour: '#e67e22'
 		}]
 	}
 

@@ -1,0 +1,25 @@
+#instant {
+	background: #eee;
+	width: 100%;
+	padding: 50px;
+	text-align: center;
+	.rz-bubble {
+		visibility: hidden !important;
+	}
+	.total {
+		font-weight: 400;
+		font-size: 24px;
+		small {
+			font-size: 16px;
+			color: grey;
+		}
+	}
+	.text {
+		font-size: 18px;
+		margin: 20px;
+		margin-bottom: 60px;
+	}
+	.estimate {
+		margin-top: 60px;	
+	}
+}

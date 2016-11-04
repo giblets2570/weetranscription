@@ -9,8 +9,10 @@ export class MainController {
   newThing = '';
 
   /*@ngInject*/
-  constructor($http, $scope, socket, s3, keen, Auth, User, Modal,appConfig) {
-    console.log(Modal);
+  constructor($http, $q,$scope, socket, s3, keen, Auth, User, Modal, appConfig, anchorSmoothScroll) {
+    this.$q = $q;
+    this.Modal = Modal;
+    console.log(this.Modal);
     this.$http = $http;
     this.socket = socket;
     this.s3 = s3;
@@ -25,6 +27,11 @@ export class MainController {
     this.progress = 0;
     this.quote_text = "Our instant quote";
     this.keen.log('landed',{date: Date.now()});
+    this.discount = 0;
+    this.scrollTo =  (el) => {
+      this.keen.log('pressedInstant',{date: Date.now()});
+      anchorSmoothScroll.scrollTo(el);
+    }
   }
 
   processToken(token){
@@ -33,32 +40,43 @@ export class MainController {
     this.progress = 0;
     this.keen.log('pressedOrder',{date: Date.now(), email: token.email});
     let old_user = this.User.find({email: token.email})
-    old_user.then(_=>{
-      if(old_user.found){
+    old_user.$promise
+    .then(_=>{
+      if(!old_user.found){
         this.discount = 25;
+        let scope = {
+          modal: {
+            title: 'Hello first timer!',
+            text: `You get a 25% discount of your first order. This means you get £${(this.discount*this.price / 10000.0).toFixed(2)} off!`,
+            success: 'Sounds great!'
+          }
+        }
+        return this.Modal.success(scope);
+      }else{
+        return this.$q.resolve();
       }
-      let scop
-      this.Modal.confirm()
     })
-    // this.s3.sendFile(this.$file).then((resp) => {
-    //   let audio = `${resp.config.url}${resp.config.data.key}`;
-    //   this.keen.log('audioUploaded',{date: Date.now(), email: token.email});
-    //   this.Auth.createUser({
-    //     token: token,
-    //     audio: audio,
-    //     amount: this.price
-    //   }).then(_=>{
-    //     this.order_confirmed = true;
-    //     this.charging = false;
-    //     this.quote_text = "Your order summary";
-    //     this.keen.log('orderConfirmed',{date: Date.now(), email: token.email});
-    //   });
-    // },  (error) => {
-    //   console.log(error);
-    // },  (evt) => {
-    //   this.progress = Math.min(parseInt(100.0 * evt.loaded / evt.total),95);
-    //   console.log(this.progress);
-    // });
+    .then(_=>{
+      this.s3.sendFile(this.$file).then((resp) => {
+        let audio = `${resp.config.url}${resp.config.data.key}`;
+        this.keen.log('audioUploaded',{date: Date.now(), email: token.email});
+        this.Auth.createUser({
+          token: token,
+          audio: audio,
+          amount: this.price
+        }).then(_=>{
+          this.order_confirmed = true;
+          this.charging = false;
+          this.quote_text = "Your order summary";
+          this.keen.log('orderConfirmed',{date: Date.now(), email: token.email});
+        });
+      },  (error) => {
+        console.log(error);
+      },  (evt) => {
+        this.progress = Math.min(parseInt(100.0 * evt.loaded / evt.total),95);
+        console.log(this.progress);
+      });
+    })
   }
 
   openCheckout(){

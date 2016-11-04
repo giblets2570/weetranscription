@@ -26,6 +26,7 @@ export default function(app) {
     // req.connection._peername.address is for testing distrbution on localhost
     if(req.headers["x-forwarded-proto"] === "https" || req.connection._peername.address === '127.0.0.1'){
       // OK, continue
+      console.log("OK CONTINUE", req.headers["x-forwarded-proto"], req.connection._peername.address);
       return next();
     }else{
       return res.redirect(301,'https://'+req.hostname+req.url);
@@ -33,9 +34,9 @@ export default function(app) {
   };
 
   // Handle environments
-  if (process.env.NODE_ENV === 'production') {
+  // if (process.env.NODE_ENV === 'production') {
     app.all('*', ensureSecure);
-  }
+  // }
 
   // Insert routes below
   app.use('/api/things', require('./api/thing'));

@@ -1,0 +1,20 @@
+<div class="container" id='instant'>
+	<div class="row">
+		<div class="col-md-12">
+			<h2 class="head">Our Cost Calculation Tool</h2>
+			<p class="text">Slide the slider below to change to length of the recording you want to trascribe. Our instant quote will update on the right.</p>
+			<rzslider 
+				rz-slider-model="$ctrl.time"
+				rz-slider-options="$ctrl.options"
+				></rzslider>
+		</div>
+	</div>
+	<div class="row estimate">
+		<div class="col-md-6">
+			<p class="total"> Total audio length: <time seconds="$ctrl.time"></time>  <small>(hh:mm:ss)</small></p>
+		</div>
+		<div class="col-md-6">
+			<p class="total"> Total transcription cost: £{{$ctrl.time * $ctrl.base / (60 * 100.0) | number : 2}} </p>
+		</div>
+	</div>
+</div>

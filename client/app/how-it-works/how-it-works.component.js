@@ -6,16 +6,20 @@ export class howItWorksComponent {
   constructor() {
     this.hows = [{
 			image: '/assets/images/upload.png',
-      title: '1. Upload your file'
+      title: '1. Upload',
+      text: 'Upload your audio file to our secure website'
     },{
 			image: '/assets/images/coffee-cup.png',
-      title: '2. Wait 24 hours'
+      title: '2. Wait',
+      text: 'Wait 24 hours or less for us to finish your transcription'
     },{
 			image: '/assets/images/envelope.png',
-      title: '3. Receive an email'
+      title: '3. Receive an email',
+      text: 'You will receive an email with your full transcription'
     },{
 			image: '/assets/images/round-done-button.png',
-      title: '4. Enjoy transcription!'
+      title: '4. Enjoy transcription!',
+      text: ''
     }]
   }
 }

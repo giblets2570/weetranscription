@@ -6,11 +6,11 @@ export class whyUsComponent {
   constructor() {
     this.whys = [{
       image: '/assets/images/piggy-bank.png',
-      text: 'Our superiour trancription processes allows us to offer great prices, starting from £0.80 per minute.',
+      text: 'Our superior trancription processes allows us to offer great prices, starting from £0.70 per minute.',
       title: 'Honest Pricing'
     },{
       image: '/assets/images/quality.png',
-      text: 'We believe high quality work is what keeps our clients happy. 100% money back guarentee is you aren\'t satisfied.',
+      text: 'We believe high quality work is what keeps our clients happy. 100% money back guarantee is you aren\'t satisfied.',
       title: 'High quality'
     },{
       image: '/assets/images/clock.png',

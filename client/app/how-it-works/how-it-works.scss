@@ -7,6 +7,13 @@
 	.pictures {
 		padding-left: 150px;
 		padding-right: 150px;
+		@media (max-width: 768px) {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.one {
+			margin-bottom: 60px;
+		}
 	}
 	.head{
 		color: black;
@@ -15,5 +22,8 @@
 	.image {
 		height: 60px;
 		margin-bottom: 10px;
+	}
+	p {
+		font-size: 18px;
 	}
 }

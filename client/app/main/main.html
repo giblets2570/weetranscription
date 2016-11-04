@@ -3,15 +3,23 @@
     <h1>Transcriptions, made really easy</h1>
     <p class="lead">24hr turnaround. We save your time for 70p a minute</p>
     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
+      <div class="col-xs-12">
         <button 
-          class='cta' 
+          class='cta left' 
           ngf-select="$ctrl.chooseFile($file)">
-          UPLOAD
+          UPLOAD FOR INSTANT QUOTE
+        </button>
+        <p class="or">or</p>
+        <button
+          class='cta right'
+          href="#instant"
+          ng-click='$ctrl.scrollTo("instant")'
+          >
+          SEE COST CALCULATOR
         </button>
       </div>
     </div>
-    <p class="tna">English speakers only. Max uploads are 750MB per file. No minimum charge. Your files are treated as confidential. Customers get 25% off their first order.</p>
+    <p class="tna"> <strong>Customers get 25% off their first order.</strong> English speakers only. Max uploads are 750MB per file. No minimum charge. Your files are treated as confidential.</p>
   </div>
 </header>
 
@@ -37,7 +45,7 @@
         </div>
         <div class="card-content">
           <p>
-            {{$ctrl.price / 100 | number : 2}}
+            {{$ctrl.price * (1 - $ctrl.discount / 100.0) / 100.0 | number : 2}}
           </p>
         </div>
       </div>
@@ -67,7 +75,7 @@
             <time seconds='$ctrl.seconds'></time>
           </td>
           <td uib-tooltip="The price is 0.70p per minute">
-            <time seconds='$ctrl.seconds'></time> x £{{$ctrl.base / 100 | number : 2}} = £{{$ctrl.price / 100 | number : 2}}
+            <time seconds='$ctrl.seconds'></time> x £{{$ctrl.base / 100 | number : 2}} <span ng-show='$ctrl.discount'> with {{$ctrl.discount}}% off </span> = £{{$ctrl.price * (1 - $ctrl.discount / 100.0) / 100.0 | number : 2}}
           </td>
         </tr>
       </table>
@@ -102,4 +110,5 @@
 
 <how-it-works></how-it-works>
 
+<instant-quote base='$ctrl.base'></instant-quote>
 

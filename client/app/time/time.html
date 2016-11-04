@@ -1,1 +1,1 @@
-<span>{{$ctrl.hours}}:{{$ctrl.minutes}}:{{$ctrl._seconds}}</span>
+<span>{{$ctrl.twoDigits($ctrl.seconds / 3600)}}</span>:<span>{{$ctrl.twoDigits(($ctrl.seconds % 3600) / 60)}}</span>:<span>{{$ctrl.twoDigits($ctrl.seconds % 60)}}</span>
