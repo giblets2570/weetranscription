@@ -39,9 +39,6 @@ import keen from './keen/keen.service';
 import ngFileUpload from 'ng-file-upload';
 import slider from 'angularjs-slider';
 
-console.log(slider);
-
-
 import './app.scss';
 
 angular.module('transcribeApp', [ngCookies, Modal, ngAnimate, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
@@ -49,6 +46,7 @@ angular.module('transcribeApp', [ngCookies, Modal, ngAnimate, ngResource, ngSani
   s3, reviews, whyUs, time, keen, terms, contact, howItWorks, slider, instantQuote
 ])
   .config(routeConfig)
+
   .service('anchorSmoothScroll', function(){
     
     this.scrollTo = function(eID) {

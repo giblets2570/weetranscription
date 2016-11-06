@@ -9,10 +9,11 @@ export class MainController {
   newThing = '';
 
   /*@ngInject*/
-  constructor($http, $q,$scope, socket, s3, keen, Auth, User, Modal, appConfig, anchorSmoothScroll) {
+  constructor($http, $q,$scope, $timeout,socket, s3, keen, Auth, User, Modal, anchorSmoothScroll) {
     this.$q = $q;
+    this.$scope = $scope;
     this.Modal = Modal;
-    console.log(this.Modal);
+    this.$timeout = $timeout;
     this.$http = $http;
     this.socket = socket;
     this.s3 = s3;
@@ -20,7 +21,9 @@ export class MainController {
     this.Auth = Auth;
     this.keen = keen;
     this.$file = null;
+    this.$child_file = null;
     this.base = 70;
+    this.anchorSmoothScroll = anchorSmoothScroll;
     this.times = [{text: '1 day', date: Date.now()},{text: '3 days', date: Date.now()},{text: '5 days', date: Date.now()}];
     this.selected_time = '1 day';
     this.checkout = "CHECKOUT";
@@ -30,8 +33,13 @@ export class MainController {
     this.discount = 0;
     this.scrollTo =  (el) => {
       this.keen.log('pressedInstant',{date: Date.now()});
-      anchorSmoothScroll.scrollTo(el);
+      this.anchorSmoothScroll.scrollTo(el);
     }
+    $scope.$watch(()=>this.$child_file,(file) => {
+      if(file){
+        this.chooseFile(file);
+      }
+    })
   }
 
   processToken(token){
@@ -89,17 +97,25 @@ export class MainController {
   }
 
   $onInit() {
-    this.$http.get('/api/stripe')
-      .then(response => {
-        let $this = this;
-        this.handler = StripeCheckout.configure({
-          key: response.data,
-          image: '/assets/images/four.png',
-          locale: 'auto',
-          currency: 'gbp',
-          token: this.processToken.bind($this)
-        });
+    let script = document.createElement('script');
+    let $this = this;
+    script.type = 'text/javascript';
+    script.src = 'https://checkout.stripe.com/checkout.js';
+    document.body.appendChild(script);
+    script.onload = () => {
+      this.$scope.$apply(() => {
+        this.$http.get('/api/stripe')
+          .then(response => {
+            this.handler = StripeCheckout.configure({
+              key: response.data,
+              image: '/assets/images/four.png',
+              locale: 'auto',
+              currency: 'gbp',
+              token: this.processToken.bind($this)
+            });
+          });
       })
+    };
   }
 
   getDate(){
@@ -131,6 +147,7 @@ export class MainController {
         this.seconds = seconds;
         this.price = Math.floor(this.seconds * this.base / 60.0);
         this.keen.log('choseFile',{date: Date.now(), filename: this.filename, seconds: this.seconds, price: this.price});
+        this.$timeout(()=>this.anchorSmoothScroll.scrollTo('quote'));
       })
     }
   }

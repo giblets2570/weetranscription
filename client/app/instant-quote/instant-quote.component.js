@@ -9,6 +9,14 @@ export class instantQuoteComponent {
       floor: 0,
       ceil: 14400
     }
+    this.print = console.log;
+    $scope.$watch(()=>this.time,(n,old)=>{
+      this.changed = old !== this.time;
+    }, true);
+  }
+  chooseFile(file){
+    this.file = file;
+    console.log(this.file);
   }
 }
 
@@ -18,7 +26,8 @@ export default angular.module('transcribeApp.instant-quote', [])
   .component('instantQuote', {
     template: require('./instant-quote.html'),
     bindings: {
-      base: '='
+      base: '=',
+      file: '='
     },
     controller: instantQuoteComponent
   })

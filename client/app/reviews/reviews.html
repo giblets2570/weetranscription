@@ -3,9 +3,7 @@
 		<div class="col-md-6" ng-repeat="review in $ctrl.reviews">
 			<div class="row single">
 				<div class="col-md-offset-2 col-md-2">
-					<img 
-						ng-src='{{review.image}}'
-						class="image">	
+					<img ng-class="review.class+' image'">	
 				</div>
 				<div class=" col-md-8">
 					<p class="text" ng-bind='review.text'></p>	

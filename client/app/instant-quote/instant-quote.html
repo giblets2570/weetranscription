@@ -17,4 +17,11 @@
 			<p class="total"> Total transcription cost: £{{$ctrl.time * $ctrl.base / (60 * 100.0) | number : 2}} </p>
 		</div>
 	</div>
+	<button 
+		class='cta left' 
+		ngf-select="$ctrl.chooseFile($file)"
+		ng-show='$ctrl.changed'
+		>
+		UPLOAD FOR INSTANT QUOTE
+    </button>
 </div>

@@ -6,9 +6,7 @@
 	</div>
 	<div class="row pictures">
 		<div class="col-md-3 one" ng-repeat="how in $ctrl.hows">
-			<img 
-				ng-src="{{how.image}}"
-				class="image">
+			<img ng-class="how.class+' image'">
 			<h3 class="title">
 				{{how.title}}
 			</h3>

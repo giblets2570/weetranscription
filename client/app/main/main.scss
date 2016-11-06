@@ -76,7 +76,9 @@
   margin-top: -20px;
   height: 60vh;
   @media (max-width: 768px) {
-    height: 80vh;
+    // min-height: 80vh;
+    height: 1%;
+    overflow: hidden;
   }
 }
 

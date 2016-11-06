@@ -8,17 +8,17 @@
         <span class="icon-bar"></span>
       </button>
       <a href="/" class="navbar-brand">
-        <img 
-          src="/assets/images/logo.png"
+        <img
           class="logo" 
           >
       </a>
     </div>
     <div uib-collapse="$ctrl.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
-        <!-- <li ng-repeat="item in $ctrl.menu" ui-sref-active="active">
-            <a ui-sref="{{item.state}}">{{item.title}}</a>
-        </li> -->
+        <li ng-repeat="item in $ctrl.menu" ui-sref-active="active">
+          <a ng-if='item.state' ui-sref="{{item.state}}">{{item.title}}</a>
+          <a ng-if='$ctrl.state === "main" && item.id' href="" ng-click='$ctrl.scrollTo(item.id)'>{{item.title}}</a>
+        </li>
         <!-- <li ng-show="$ctrl.isAdmin()" ui-sref-active="active"><a ui-sref="admin">Admin</a></li> -->
       </ul>
 

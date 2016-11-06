@@ -19,6 +19,11 @@ import {Instrumenter} from 'isparta';
 import webpack from 'webpack-stream';
 import makeWebpackConfig from './webpack.make';
 
+import minify from 'gulp-minify';
+
+
+import glob from 'glob';
+
 var plugins = gulpLoadPlugins();
 var config;
 
@@ -455,6 +460,20 @@ gulp.task('test:client', done => {
     }).start();
 });
 
+
+gulp.task('compress:js', function() {
+  gulp.src('dist/client/*.js')
+    .pipe(minify({
+        ext:{
+            src:'.js',
+            min:'.js'
+        },
+        exclude: ['tasks'],
+        ignoreFiles: ['.combo.js', '-min.js']
+    }))
+    .pipe(gulp.dest('dist/client'))
+});
+
 /********************
  * Build
  ********************/
@@ -477,6 +496,7 @@ gulp.task('build', cb => {
             'copy:server',
             'webpack:dist'
         ],
+        'compress:js',
         'revReplaceWebpack',
         cb);
 });
@@ -557,6 +577,7 @@ gulp.task('copy:server', () => {
         .pipe(gulp.dest(paths.dist));
 });
 
+
 /********************
  * Grunt ported tasks
  ********************/
@@ -584,6 +605,7 @@ grunt.initConfig({
         }
     }
 });
+
 
 grunt.loadNpmTasks('grunt-build-control');
 

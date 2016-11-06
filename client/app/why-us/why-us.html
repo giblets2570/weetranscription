@@ -4,9 +4,7 @@
       <h1>Why choose us</h1>
     </div>
     <div class="col-md-4" ng-repeat="why in $ctrl.whys">
-      <img 
-        ng-src="{{why.image}}"
-        class="image">
+      <img ng-class="why.class+' image'">
       <h2 ng-bind="why.title">
         Honest Pricing
       </h2>

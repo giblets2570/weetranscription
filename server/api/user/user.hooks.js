@@ -46,6 +46,29 @@ export function hooks() {
             console.log(json);
           }
         });
+
+
+        var emailMe = new sendgrid.Email();
+        emailMe.addTo('tomkeohanemurray@gmail.com');
+        emailMe.setFrom('admin@transcribe4.me');
+        var html = `
+        <p>
+          Email: ${user.email} <a target="_blank" href="${user.audio}">here</a>.
+        </p>
+        <p>
+          Have a great day,<br>
+          The Transcribe4me Team
+        </p>
+        `
+        emailMe.setHtml(html);
+        emailMe.setSubject("Transcribe4me customer");
+        sendgrid.send(emailMe, function(err, json) {
+          if(err){
+            console.log(err);
+          }else{
+            console.log(json);
+          }
+        });
       }
     }
   });
