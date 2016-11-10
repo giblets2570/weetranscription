@@ -38,12 +38,14 @@ import instantQuote from './instant-quote/instant-quote.component';
 import keen from './keen/keen.service';
 import ngFileUpload from 'ng-file-upload';
 import slider from 'angularjs-slider';
+import ThankyouComponent from './thankyou/thankyou.component';
+import ngAudio from 'angular-audio';
 
 import './app.scss';
 
 angular.module('transcribeApp', [ngCookies, Modal, ngAnimate, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
   uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util , ngFileUpload, 
-  s3, reviews, whyUs, time, keen, terms, contact, howItWorks, slider, instantQuote
+  s3, reviews, whyUs, time, keen, terms, contact, howItWorks, slider, instantQuote, ThankyouComponent, ngAudio
 ])
   .config(routeConfig)
 

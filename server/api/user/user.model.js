@@ -21,6 +21,14 @@ var UserSchema = new Schema({
       }
     }
   },
+  audio: String,
+  price: Number,
+  discount: Number,
+  paid: {
+    type: Boolean,
+    default: false
+  },
+  stripe_customer_id: String,
   role: {
     type: String,
     default: 'user'
@@ -38,7 +46,11 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
   google: {},
-  github: {}
+  github: {},
+  created: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 /**
@@ -50,8 +62,11 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
-      name: this.name,
-      role: this.role
+      name: this.email,
+      audio: this.audio,
+      role: this.role,
+      price: this.price,
+      discount: this.discount
     };
   });
 

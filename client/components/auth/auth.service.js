@@ -24,7 +24,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
   };
 
   if($cookies.get('token') && $location.path() !== '/logout') {
-    currentUser = User.get();
+    currentUser = User.me();
   }
 
   var Auth = {
@@ -45,7 +45,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
       })
         .then(res => {
           $cookies.put('token', res.data.token);
-          currentUser = User.get();
+          currentUser = User.me();
           return currentUser.$promise;
         })
         .then(user => {
@@ -77,7 +77,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     createUser(user, callback) {
       return User.save(user, function(data) {
         $cookies.put('token', data.token);
-        currentUser = User.get();
+        currentUser = User.me();
         return safeCb(callback)(null, user);
       }, function(err) {
         Auth.logout();

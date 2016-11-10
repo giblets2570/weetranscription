@@ -1,0 +1,19 @@
+<div class="container" id="thankyou">
+	<h1>Thanks for your order!</h1>
+	<h2>Order summary</h2>
+	<p>Your audio</p>
+	<button 
+		class="btn btn-success"
+		ng-click='$ctrl.user.audio.paused ? $ctrl.user.audio.play() : $ctrl.user.audio.pause()'
+		>Click me to {{$ctrl.user.audio.paused ? "play" : "pause"}}
+	</button>
+	<br>
+	<br>
+	<p>Your email: {{$ctrl.user.name}}</p>
+	<br>
+	<h3> Total cost: £{{ $ctrl.user.price * (1 - $ctrl.user.discount / 100.0) / 100.0 | number:2}} </h3>
+
+	<hr>
+
+	<p>Sit tight, we will have your transcription back to you within 24 hours :)</p>
+</div>

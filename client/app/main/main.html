@@ -1,12 +1,16 @@
 <header class="hero-unit" id="banner">
+  <img class='dude'>
   <div class="container">
-    <h1>Transcriptions, made really easy</h1>
-    <p class="lead">24hr turnaround. We save your time for 70p a minute</p>
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-lg-9">
+        <h1>Transcriptions, made really easy</h1>
+        <p class="lead">24hr turnaround. We save your time for <strong><u>70p a minute</u></strong></p>
         <button 
           class='cta left' 
-          ngf-select="$ctrl.chooseFile($file)">
+          ngf-select="$ctrl.chooseFile($file)"
+          ngf-max-size="750MB"
+          ngf-pattern="'audio/*'"
+          ngf-accept="'audio/*'">
           UPLOAD FOR INSTANT QUOTE
         </button>
         <p class="or">or</p>
@@ -17,9 +21,9 @@
           >
           SEE OUR COST CALCULATOR
         </button>
+        <p class="tna"> <strong>Customers get 25% off their first order.</strong> English speakers only. Max uploads are 750MB per file. No minimum charge. Your files are treated as confidential.</p>
       </div>
     </div>
-    <p class="tna"> <strong>Customers get 25% off their first order.</strong> English speakers only. Max uploads are 750MB per file. No minimum charge. Your files are treated as confidential.</p>
   </div>
 </header>
 
@@ -33,7 +37,7 @@
         </div>
         <div class="card-content">
           <p>
-            {{$ctrl.getDate() | date}}
+            {{$ctrl.date | date}}
           </p>
         </div>
       </div>

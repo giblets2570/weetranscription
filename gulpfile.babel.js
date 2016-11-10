@@ -460,8 +460,9 @@ gulp.task('test:client', done => {
     }).start();
 });
 
+import gzip from 'gulp-gzip';
 
-gulp.task('compress:js', function() {
+gulp.task('minify:js', function() {
   gulp.src('dist/client/*.js')
     .pipe(minify({
         ext:{
@@ -471,7 +472,16 @@ gulp.task('compress:js', function() {
         exclude: ['tasks'],
         ignoreFiles: ['.combo.js', '-min.js']
     }))
+    // .pipe(gzip({append: false}))
     .pipe(gulp.dest('dist/client'))
+});
+
+import compressor from 'gulp-compressor';
+
+gulp.task('compress:js', function () {
+    gulp.src('dist/client/*.js')
+        .pipe(compressor())
+        .pipe(gulp.dest('dist/client/'));
 });
 
 /********************
@@ -496,7 +506,7 @@ gulp.task('build', cb => {
             'copy:server',
             'webpack:dist'
         ],
-        'compress:js',
+        'minify:js',
         'revReplaceWebpack',
         cb);
 });

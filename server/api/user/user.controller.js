@@ -43,18 +43,25 @@ export function index(req, res) {
 export function create(req, res) {
   return co(function*(){
     if(req.body.token && req.body.token.id){
-      let stripe_charge = yield stripe.charges.create({
-        amount: req.body.amount,
-        currency: "gbp",
-        source: req.body.token.id, // obtained with Stripe.js
-        description: `Charge for ${req.body.token.email}`
+      // let stripe_charge = yield stripe.charges.create({
+      //   amount: Math.floor(req.body.amount*(100 - req.body.discount) / 100.0),
+      //   currency: "gbp",
+      //   source: req.body.token.id, // obtained with Stripe.js
+      //   description: `Charge for ${req.body.token.email}`
+      // });
+      let customer = yield stripeClient.customers.create({
+        source: req.body.token.id,
+        description: 'Saved details for '+req.body.token.email
       });
       let newUser = new User();
+      newUser.stripe_customer_id = customer.id;
       newUser.email = req.body.token.email;
       newUser.audio = req.body.audio;
       newUser.stripe_charge_id = stripe_charge.id;
       newUser.provider = 'local';
       newUser.role = 'customer';
+      newUser.price = req.body.amount;
+      newUser.discount = req.body.discount;
       newUser.password = newUser.email;
       yield newUser.save()
       return newUser

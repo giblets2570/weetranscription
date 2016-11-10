@@ -12,7 +12,7 @@ export function UserResource($resource) {
         controller: 'password'
       }
     },
-    get: {
+    me: {
       method: 'GET',
       params: {
         id: 'me'
